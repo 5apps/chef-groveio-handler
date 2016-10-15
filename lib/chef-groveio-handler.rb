@@ -16,12 +16,12 @@ class ChefGroveIOHandler < Chef::Handler
   def report
     status = failed? ? "failed" : "succeeded"
     messages = ["chef-client run on #{node[:fqdn]} has #{status}"]
-    
+
     if failed?
       messages << "Error: #{run_status.formatted_exception}"
       if @options[:backtrace]
-				messages << "Backtrace:"
-				messages += Array(backtrace)[0..4]
+        messages << "Backtrace:"
+        messages += Array(backtrace)[0..4]
       end
     end
 
