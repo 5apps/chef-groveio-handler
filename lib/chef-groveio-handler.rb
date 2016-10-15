@@ -5,7 +5,7 @@ require 'net/https'
 require 'uri'
 
 class ChefGroveIOHandler < Chef::Handler
-  VERSION = '0.0.4'
+  VERSION = '0.0.5'
 
   def initialize(url_hash, options={})
     @options = options
@@ -32,6 +32,9 @@ class ChefGroveIOHandler < Chef::Handler
           uri = URI.parse @url
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
+          # Grove's HTTPS cert expired and they are shutting down. Do not
+          # verify it.
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
           messages.each do |error_message|
             request = Net::HTTP::Post.new(uri.request_uri)
